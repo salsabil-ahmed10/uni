@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Study Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <button class="link" data-action="go" data-to="home">Study Dashboard</button>
+    <input type="search" id="search" placeholder="Search subjects & assessments…" aria-label="Search">
+    <button class="btn ghost" data-action="theme" id="themeBtn">Dark</button>
+  </header>
+
+  <!-- Navigation: Home, Subjects, Tasks, and one button per assessment section -->
+  <nav class="nav" id="nav" aria-label="Sections"></nav>
+
+  <!-- The current page is drawn here by script.js -->
+  <main id="view"></main>
+</div>
+
+<div class="overlay" id="overlay" hidden>
+  <form class="modal" id="modalForm"></form>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

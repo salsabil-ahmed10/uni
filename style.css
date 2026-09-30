@@ -1,0 +1,127 @@
+/* ========== 1. DESIGN TOKENS (colors, radius, shadow) ==========
+   Change these and the whole site changes. Dark mode overrides them. */
+:root {
+  --bg: #f7f3ef;
+  --card: #ffffff;
+  --text: #3d3436;
+  --muted: #8f8386;
+  --line: #eee5e1;
+  --pink: #e8a6b6;
+  --pink-soft: #fbe9ee;
+  --beige: #efe4d8;
+  --ok: #7fae95;
+  --late: #c9707f;
+  --radius: 18px;
+  --shadow: 0 4px 18px rgba(120, 90, 90, .08);
+}
+:root[data-theme="dark"] {
+  --bg: #1f1b1d; --card: #2a2528; --text: #f1e8ea; --muted: #a4979b;
+  --line: #3a3236; --pink: #d98ea1; --pink-soft: #3a2b31; --beige: #3a332f;
+  --shadow: 0 4px 18px rgba(0, 0, 0, .3);
+}
+
+/* ========== 2. BASE ========== */
+* { box-sizing: border-box; margin: 0; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: "DM Sans", system-ui, sans-serif; line-height: 1.5;
+  transition: background .3s, color .3s;
+}
+h1, h2 { font-family: "Fraunces", Georgia, serif; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
+h2 { font-size: 1.4rem; }
+h3 { margin-bottom: .6rem; }
+.muted, small { color: var(--muted); }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
+
+/* ========== 3. LAYOUT ========== */
+.app { max-width: 1050px; margin: 0 auto; padding: 1rem 1.2rem 4rem; }
+main > section { margin-top: 2.2rem; }
+.topbar { display: flex; gap: .8rem; align-items: center; padding: .6rem 0; }
+.topbar input { flex: 1; }
+.section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: .8rem; }
+.grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.two-col { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; margin-top: 2.2rem; }
+.stats { display: grid; gap: .8rem; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+
+/* ========== 4. COMPONENTS ========== */
+.card, .stat, .subject {
+  background: var(--card); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 1.1rem 1.2rem;
+}
+.stat b { display: block; font-size: 1.8rem; }
+.stat:nth-child(odd) { background: var(--pink-soft); }
+.stat:nth-child(even) { background: var(--beige); }
+
+.subject { cursor: pointer; transition: transform .15s; }
+.subject:hover { transform: translateY(-3px); }
+.subject h3 { margin-bottom: .2rem; }
+
+/* progress bar: outer track + inner fill whose width is set from JS */
+.bar { height: 10px; background: var(--line); border-radius: 99px; overflow: hidden; margin: .6rem 0 .3rem; }
+.bar span { display: block; height: 100%; width: 0; background: var(--pink); border-radius: 99px; transition: width .4s; }
+.hero .overall { max-width: 420px; margin-top: 1rem; }
+
+/* buttons */
+button { font: inherit; color: inherit; cursor: pointer; }
+.btn { background: var(--pink); color: #fff; border: 0; padding: .5rem 1rem; border-radius: 99px; font-weight: 500; }
+.btn.ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+.btn.danger { background: transparent; color: var(--late); border: 1px solid var(--late); }
+.icon-btn, .link { background: none; border: 0; }
+.link { font-weight: 700; font-size: 1.05rem; white-space: nowrap; }
+.icon-btn { font-size: 1.3rem; }
+.del { background: none; border: 0; color: var(--muted); font-size: 1.1rem; }
+.del:hover { color: var(--late); }
+
+/* filter chips */
+.chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .8rem; }
+.chip { background: var(--card); border: 1px solid var(--line); border-radius: 99px; padding: .25rem .8rem; }
+.chip.active { background: var(--pink-soft); border-color: var(--pink); }
+
+/* lists (tasks, assessments, lectures) */
+.list { list-style: none; padding: 0; }
+.card.list { padding: .4rem 1.2rem; }
+.item { display: flex; align-items: center; gap: .7rem; padding: .65rem 0; border-bottom: 1px solid var(--line); }
+.item:last-child { border-bottom: 0; }
+.item label { flex: 1; cursor: pointer; }
+.item .meta { font-size: .8rem; color: var(--muted); display: block; }
+.item.done label { opacity: .55; text-decoration: line-through; } /* completed: dimmed but readable */
+.item.late .meta { color: var(--late); }
+input[type="checkbox"] { width: 1.15rem; height: 1.15rem; accent-color: var(--pink); }
+.tag { font-size: .72rem; background: var(--beige); padding: .1rem .55rem; border-radius: 99px; }
+.empty { text-align: center; color: var(--muted); padding: 1.2rem 0; }
+.lectures { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); column-gap: 1.5rem; }
+
+/* form controls */
+input:not([type="checkbox"]), select {
+  font: inherit; color: var(--text); background: var(--card);
+  border: 1px solid var(--line); border-radius: 12px; padding: .55rem .8rem; width: 100%;
+}
+
+/* ========== 5. MODAL ========== */
+.overlay { position: fixed; inset: 0; background: rgba(40, 30, 32, .45); display: grid; place-items: center; padding: 1rem; z-index: 10; }
+.modal { background: var(--card); border-radius: var(--radius); padding: 1.5rem; width: min(420px, 100%); display: grid; gap: .7rem; }
+.modal label { font-size: .85rem; color: var(--muted); display: grid; gap: .25rem; }
+.modal .row { display: flex; gap: .6rem; justify-content: flex-end; margin-top: .4rem; }
+
+/* ========== 6. RESPONSIVE ========== */
+@media (max-width: 720px) {
+  .two-col { grid-template-columns: 1fr; }
+  .topbar { flex-wrap: wrap; }
+  .topbar input { order: 3; flex-basis: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* ========== 7. TABS + DAILY TASK LOG ========== */
+.day-nav { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; margin-bottom: .8rem; }
+.day-nav input { width: auto; }
+.log-row { display: flex; justify-content: space-between; padding: .65rem 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+.log-row:last-child { border-bottom: 0; }
+.log-row.active { color: var(--pink); font-weight: 700; }
+.foot { margin-top: .8rem; }
+
+/* ========== 8. NAVIGATION BAR ========== */
+.nav { display: flex; gap: .4rem; overflow-x: auto; padding: .2rem 0 .8rem; border-bottom: 1px solid var(--line); }
+.nav .chip { white-space: nowrap; }
+.chip { cursor: pointer; }
